@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import USER_TOKEN from './token'
+import USER_TOKEN from './token';
+import debounce from "lodash/debounce";
 
 const MAX_PER_PAGE = 5
 
@@ -28,7 +29,7 @@ export default class List extends React.Component {
             },
     };
 
-    getResponse() {
+    getResponse = debounce(() => {
         const { params, name } = this.state
         const AuthStr = 'Bearer ' + USER_TOKEN
         axios
@@ -51,19 +52,21 @@ export default class List extends React.Component {
                     loading: false,
                 });
             });
+    },1000)
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.name !== this.state.name) {
+            this.getResponse()
+        }
     }
 
     componentDidMount() {
         this.getResponse()
     }
 
-    handleSubmit(event) {
-        event.preventDefault();
-    }
-
-    handleChange = (event) => {
+    handleChange = event => {
         this.setState({ name: event.target.value });
-        this.getResponse()
+
     }
 
     renderLoading() {
@@ -115,10 +118,10 @@ export default class List extends React.Component {
     render() {
         return( 
             <div>
-                <form onSubmit={this.handleSubmit}>
+                <form>
                     <label>
                         Name:
-                        <input type="text" value={this.state.name} onChange={this.handleChange} />
+                        <input type="search" value={this.state.name} onChange={this.handleChange} />
                     </label>
                 </form>
                 {this.state.loading ? this.renderLoading() : this.renderList()}
