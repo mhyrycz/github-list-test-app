@@ -1,9 +1,11 @@
 import React from 'react';
 import axios from 'axios';
+import { connect } from 'react-redux';
 import USER_TOKEN from './token';
 import debounce from "lodash/debounce";
+import { addRepositories, removeRepositories } from './actions/repositories'
 
-const MAX_PER_PAGE = 5
+const MAX_PER_PAGE = 10
 
 const Repo = ({ repo }) =>
     <tr>
@@ -14,9 +16,8 @@ const Repo = ({ repo }) =>
         <td>{repo.created_at}</td>
     </tr>;
 
-export default class List extends React.Component {
+class List extends React.Component {
     state = {
-            repos: [],
             loading: true,
             error: null,
             name: "react",
@@ -32,6 +33,10 @@ export default class List extends React.Component {
     getResponse = debounce(() => {
         const { params, name } = this.state
         const AuthStr = 'Bearer ' + USER_TOKEN
+        this.props.dispatch(removeRepositories());
+        this.setState({
+            loading: true,
+        });
         axios
             .get(
                 window.encodeURI(
@@ -41,8 +46,8 @@ export default class List extends React.Component {
             )
             .then(response => {
                 const repos = response.data.items;
+                this.props.dispatch(addRepositories(repos));
                 this.setState({
-                    repos,
                     loading: false,
                 });
             })
@@ -52,6 +57,7 @@ export default class List extends React.Component {
                     loading: false,
                 });
             });
+        
     },1000)
 
     componentDidUpdate(prevProps, prevState) {
@@ -88,7 +94,8 @@ export default class List extends React.Component {
     }
 
     renderList() {
-        const { error, repos } = this.state;
+        const { error } = this.state;
+        const repos = this.props.repositories
 
         if (error) {
             console.log(error);
@@ -129,3 +136,12 @@ export default class List extends React.Component {
         );
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        repositories: state.repositories,
+    };
+}
+
+
+export default connect(mapStateToProps)(List)

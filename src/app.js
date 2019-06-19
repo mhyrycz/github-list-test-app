@@ -1,7 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import configureStore from './store/configureStore';
 import List from './List';
 import 'normalize.css/normalize.css';
 import './styles/styles.scss';
 
-ReactDOM.render(<List />, document.getElementById('app'));
+const store = configureStore();
+
+const jsx = (
+    <Provider store={store}>
+        <List />
+    </Provider>
+)
+
+ReactDOM.render(jsx, document.getElementById('app'));
