@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import USER_TOKEN from './token';
 import debounce from "lodash/debounce";
 import { addRepositories, removeRepositories } from './actions/repositories';
+import { setLoadingOn, setLoadingOff, setError, resetError } from './actions/fetch';
+import { setName } from './actions/filters';
 import selectRepositories from './selectors/repositories';
 import Select from './Select';
 
@@ -19,26 +21,21 @@ const Repo = ({ repo }) =>
     </tr>;
 
 class List extends React.Component {
-    state = {
-            loading: true,
-            error: null,
-            name: "react",
-            params: {
-                page: 1,
-                per_page: MAX_PER_PAGE,
-                order: "desc",
-                type: "Repositories",
-                sort: "stars",
-            },
-    };
 
     getResponse = debounce(() => {
-        const { params, name } = this.state
+        const params = {
+            page: 1,
+            per_page: MAX_PER_PAGE,
+            order: "desc",
+            type: "Repositories",
+            sort: "stars",
+        }
+        const name = this.props.filters.name
         const AuthStr = 'Bearer ' + USER_TOKEN
-        this.props.dispatch(removeRepositories());
-        this.setState({
-            loading: true,
-        });
+        this.props.setLoadingOn();
+        this.props.resetError();
+        this.props.removeRepositories();
+
         axios
             .get(
                 window.encodeURI(
@@ -48,33 +45,23 @@ class List extends React.Component {
             )
             .then(response => {
                 const repos = response.data.items;
-                this.props.dispatch(addRepositories(repos));
-                this.setState({
-                    loading: false,
-                });
+                this.props.addRepositories(repos);
+                this.props.setLoadingOff();
             })
             .catch(error => {
-                this.setState({
-                    error: error,
-                    loading: false,
-                });
+                this.props.setError(error.response)
+                this.props.setLoadingOff();
             });
         
     },1000)
-
-    componentDidUpdate(prevProps, prevState) {
-        if (prevState.name !== this.state.name) {
-            this.getResponse()
-        }
-    }
 
     componentDidMount() {
         this.getResponse()
     }
 
     handleChange = event => {
-        this.setState({ name: event.target.value });
-
+        this.props.setName(event.target.value)
+        this.getResponse()
     }
 
     renderLoading() {
@@ -85,42 +72,49 @@ class List extends React.Component {
         );
     }
 
-    renderError() {
+    renderError(error) {
         return (
             <div>
                 <div>
-                    Error: {this.state.error.response.data.message}
+                    Error: {`${error.status} - ${error.message}`}
                 </div>
             </div>
         );
     }
 
     renderList() {
-        const { error } = this.state;
+        const { error, loading } = this.props.fetch;
+
         const repos = this.props.repositories
 
         if (error) {
-            console.log(error);
-            return this.renderError();
+            return this.renderError(error);
         }
 
         return (
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Repo Title</th>
-                        <th>Owner</th>
-                        <th>Stars</th>
-                        <th>Created at</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {repos.map((repo, index) =>
-                        <Repo repo={repo} index={index} key={repo.id} />,
-                    )}
-                </tbody>
-            </table>
+            <div>
+                {repos.length > 0 && !loading  ? ( <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Repo Title</th>
+                            <th>Owner</th>
+                            <th>Stars</th>
+                            <th>Created at</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {repos.map((repo, index) =>
+                            <Repo repo={repo} index={index} key={repo.id} />,
+                        )}
+                    </tbody>
+                </table>
+               ) : (
+                <div>Not found</div>
+               )
+                }
+            </div>
+
         );
     }
 
@@ -130,14 +124,14 @@ class List extends React.Component {
                 <form>
                     <label>
                         Name:
-                        <input type="search" value={this.state.name} onChange={this.handleChange} />
+                        <input type="search" value={this.props.filters.name} onChange={this.handleChange} />
                     </label>
                     <label>
                         Rows displayed:
                         <Select />
                     </label>
                 </form>
-                {this.state.loading ? this.renderLoading() : this.renderList()}
+                {this.props.fetch.loading ? this.renderLoading() : this.renderList()}
             </div>
         );
     }
@@ -146,8 +140,22 @@ class List extends React.Component {
 const mapStateToProps = (state) => {
     return {
         repositories: selectRepositories(state.repositories, state.filters),
+        filters: state.filters,
+        fetch: state.fetch,
     };
 }
 
 
-export default connect(mapStateToProps)(List)
+const mapDispatchToProps = (dispatch, props) => {
+    return {
+        addRepositories: repos => dispatch(addRepositories(repos)),
+        removeRepositories: repos => dispatch(removeRepositories(repos)),
+        setName: name => dispatch(setName(name)),
+        setLoadingOn: () => dispatch(setLoadingOn()),
+        setLoadingOff: () => dispatch(setLoadingOff()),
+        setError: error => dispatch(setError(error)),
+        resetError: () => dispatch(resetError())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(List)
