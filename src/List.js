@@ -3,9 +3,11 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import USER_TOKEN from './token';
 import debounce from "lodash/debounce";
-import { addRepositories, removeRepositories } from './actions/repositories'
+import { addRepositories, removeRepositories } from './actions/repositories';
+import selectRepositories from './selectors/repositories';
+import Select from './Select';
 
-const MAX_PER_PAGE = 10
+const MAX_PER_PAGE = 20
 
 const Repo = ({ repo }) =>
     <tr>
@@ -130,6 +132,10 @@ class List extends React.Component {
                         Name:
                         <input type="search" value={this.state.name} onChange={this.handleChange} />
                     </label>
+                    <label>
+                        Rows displayed:
+                        <Select />
+                    </label>
                 </form>
                 {this.state.loading ? this.renderLoading() : this.renderList()}
             </div>
@@ -139,7 +145,7 @@ class List extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        repositories: state.repositories,
+        repositories: selectRepositories(state.repositories, state.filters),
     };
 }
 
