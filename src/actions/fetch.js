@@ -1,16 +1,16 @@
 export const setLoadingOn = () => ({
-    type: 'LOADING_ON'
+  type: "LOADING_ON"
 });
 
 export const setLoadingOff = () => ({
-    type: 'LOADING_OFF'
+  type: "LOADING_OFF"
 });
 
-export const setError = (error) => ({
-    type: 'SET_ERROR',
-    error
-})
+export const setError = error => ({
+  type: "SET_ERROR",
+  error
+});
 
 export const resetError = () => ({
-    type: 'RESET_ERROR'
-})
+  type: "RESET_ERROR"
+});
