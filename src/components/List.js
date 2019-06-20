@@ -10,7 +10,14 @@ import {
   setError,
   resetError
 } from "../actions/fetch";
-import { setName, setRowsDisplayed } from "../actions/filters";
+import {
+  setName,
+  setRowsDisplayed,
+  increasePage,
+  decreasePage,
+  setMaxPage,
+  resetPage
+} from "../actions/filters";
 import selectRepositories from "../selectors/repositories";
 import Select from "./Select";
 import ListElements from "./ListElements";
@@ -31,6 +38,7 @@ class List extends React.Component {
     this.props.setLoadingOn();
     this.props.resetError();
     this.props.removeRepositories();
+    this.props.resetPage();
 
     axios
       .get(
@@ -43,6 +51,7 @@ class List extends React.Component {
         const repos = response.data.items;
         this.props.addRepositories(repos);
         this.props.setLoadingOff();
+        this.props.setMaxPage(repos.length, this.props.filters.rows);
       })
       .catch(error => {
         this.props.setError(error.response);
@@ -59,8 +68,29 @@ class List extends React.Component {
     this.getResponse();
   };
 
+  isButtonDisabled = button => {
+    const { page, maxPage } = this.props.filters;
+    if (button === "previous") {
+      if (page === 0) {
+        return true;
+      }
+    } else if (button === "next") {
+      if (page === maxPage) {
+        return true;
+      }
+    }
+  };
+
   render() {
-    const { fetch, repositories, filters, setRowsDisplayed } = this.props;
+    const {
+      fetch,
+      repositories,
+      filters,
+      setRowsDisplayed,
+      allRepositories,
+      setMaxPage,
+      resetPage
+    } = this.props;
 
     return (
       <div>
@@ -75,9 +105,27 @@ class List extends React.Component {
           </label>
           <label>
             Rows displayed:
-            <Select filters={filters} setRowsDisplayed={setRowsDisplayed} />
+            <Select
+              filters={filters}
+              allRepositories={allRepositories}
+              setRowsDisplayed={setRowsDisplayed}
+              setMaxPage={setMaxPage}
+              resetPage={resetPage}
+            />
           </label>
         </form>
+        <button
+          disabled={this.isButtonDisabled("previous")}
+          onClick={this.props.decreasePage}
+        >
+          Previous page
+        </button>
+        <button
+          disabled={this.isButtonDisabled("next")}
+          onClick={this.props.increasePage}
+        >
+          Next page
+        </button>
         <ListElements fetch={fetch} repos={repositories} />
       </div>
     );
@@ -88,7 +136,8 @@ const mapStateToProps = state => {
   return {
     repositories: selectRepositories(state.repositories, state.filters),
     filters: state.filters,
-    fetch: state.fetch
+    fetch: state.fetch,
+    allRepositories: state.repositories
   };
 };
 
@@ -101,7 +150,11 @@ const mapDispatchToProps = (dispatch, props) => {
     setLoadingOff: () => dispatch(setLoadingOff()),
     setError: error => dispatch(setError(error)),
     resetError: () => dispatch(resetError()),
-    setRowsDisplayed: rows => dispatch(setRowsDisplayed(rows))
+    setRowsDisplayed: rows => dispatch(setRowsDisplayed(rows)),
+    increasePage: () => dispatch(increasePage()),
+    decreasePage: () => dispatch(decreasePage()),
+    setMaxPage: (reposLength, rows) => dispatch(setMaxPage(reposLength, rows)),
+    resetPage: (reposLength, rows) => dispatch(resetPage(reposLength, rows))
   };
 };
 
