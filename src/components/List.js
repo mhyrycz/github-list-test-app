@@ -1,24 +1,16 @@
 import React from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import USER_TOKEN from './token';
+import USER_TOKEN from '../token';
 import debounce from "lodash/debounce";
-import { addRepositories, removeRepositories } from './actions/repositories';
-import { setLoadingOn, setLoadingOff, setError, resetError } from './actions/fetch';
-import { setName } from './actions/filters';
-import selectRepositories from './selectors/repositories';
+import { addRepositories, removeRepositories } from '../actions/repositories';
+import { setLoadingOn, setLoadingOff, setError, resetError } from '../actions/fetch';
+import { setName, setRowsDisplayed } from '../actions/filters';
+import selectRepositories from '../selectors/repositories';
 import Select from './Select';
+import ListElements from './ListElements';
 
 const MAX_PER_PAGE = 20
-
-const Repo = ({ repo }) =>
-    <tr>
-        <td>{repo.id}</td>
-        <td>{repo.name}</td>
-        <td>{repo.owner.login}</td>
-        <td>{repo.stargazers_count}</td>
-        <td>{repo.created_at}</td>
-    </tr>;
 
 class List extends React.Component {
 
@@ -39,7 +31,7 @@ class List extends React.Component {
         axios
             .get(
                 window.encodeURI(
-                    `https://api.github.com/search/repositories?q=${name}+stars:<100`,
+                    `https://api.github.com/search/repositories?q=${name}`,
                 ),
                 { params , headers: { 'Authorization': AuthStr } },
             )
@@ -64,61 +56,9 @@ class List extends React.Component {
         this.getResponse()
     }
 
-    renderLoading() {
-        return (
-            <div>
-                Loading...
-            </div>
-        );
-    }
-
-    renderError(error) {
-        return (
-            <div>
-                <div>
-                    Error: {`${error.status} - ${error.message}`}
-                </div>
-            </div>
-        );
-    }
-
-    renderList() {
-        const { error, loading } = this.props.fetch;
-
-        const repos = this.props.repositories
-
-        if (error) {
-            return this.renderError(error);
-        }
-
-        return (
-            <div>
-                {repos.length > 0 && !loading  ? ( <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Repo Title</th>
-                            <th>Owner</th>
-                            <th>Stars</th>
-                            <th>Created at</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {repos.map((repo, index) =>
-                            <Repo repo={repo} index={index} key={repo.id} />,
-                        )}
-                    </tbody>
-                </table>
-               ) : (
-                <div>Not found</div>
-               )
-                }
-            </div>
-
-        );
-    }
-
     render() {
+        const { fetch, repositories, filters, setRowsDisplayed} = this.props;
+        
         return( 
             <div>
                 <form>
@@ -128,10 +68,10 @@ class List extends React.Component {
                     </label>
                     <label>
                         Rows displayed:
-                        <Select />
+                        <Select filters={filters} setRowsDisplayed={setRowsDisplayed}/>
                     </label>
                 </form>
-                {this.props.fetch.loading ? this.renderLoading() : this.renderList()}
+                <ListElements fetch={fetch} repos={repositories}/>
             </div>
         );
     }
@@ -154,7 +94,8 @@ const mapDispatchToProps = (dispatch, props) => {
         setLoadingOn: () => dispatch(setLoadingOn()),
         setLoadingOff: () => dispatch(setLoadingOff()),
         setError: error => dispatch(setError(error)),
-        resetError: () => dispatch(resetError())
+        resetError: () => dispatch(resetError()),
+        setRowsDisplayed: rows => dispatch(setRowsDisplayed(rows)),
     }
 }
 

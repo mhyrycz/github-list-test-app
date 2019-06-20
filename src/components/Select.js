@@ -1,6 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { setRowsDisplayed } from './actions/filters';
 
 const Select = (props) => (
     <div>
@@ -16,18 +14,6 @@ const Select = (props) => (
             <option value="20">20</option>
         </select>
     </div>
-)
+);
 
-const mapStateToProps = (state, props) => {
-    return {
-        filters: state.filters
-    };
-}
-
-const mapDispatchToProps = (dispatch, props) => {
-    return {
-        setRowsDisplayed: value => dispatch(setRowsDisplayed(value))
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Select)
+export default Select;
