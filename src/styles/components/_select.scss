@@ -1,9 +1,15 @@
 .select-wrapper {
   display: flex;
-  padding-right: 50px;
+  width: 40%;
+  align-content: center;
 }
 
 .select {
   color: $off-white;
   background-color: $purple;
+}
+
+.select-label {
+  padding: $s-size;
+  padding-left: 0;
 }

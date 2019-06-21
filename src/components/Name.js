@@ -11,15 +11,15 @@ const Name = props => {
   };
 
   return (
-    <label className="input-wrapper">
-      Name:
+    <div className="input-wrapper">
       <input
+        placeholder="Write to find..."
         className="input"
         type="search"
         value={filters.name}
         onChange={handleChange}
       />
-    </label>
+    </div>
   );
 };
 

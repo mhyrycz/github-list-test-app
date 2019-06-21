@@ -25,7 +25,7 @@ import Buttons from "./Buttons";
 import ListElements from "./ListElements";
 import Name from "./Name";
 
-const MAX_PER_PAGE = 20;
+const MAX_PER_PAGE = 50;
 
 class List extends React.Component {
   getResponse = debounce(() => {
@@ -90,9 +90,9 @@ class List extends React.Component {
     const currentPage = `Page: ${filters.page + 1}/${filters.maxPage + 1}`;
 
     return (
-      <div>
+      <div className="list-wrapper">
         <Name filters={filters} getResponse={this.getResponse} />
-        <div className="list-wrapper">
+        <div className="selection-buttons">
           <Select
             filters={filters}
             allRepositories={allRepositories}
@@ -101,7 +101,7 @@ class List extends React.Component {
             resetPage={resetPage}
           />
           <Buttons filters={filters} />
-          <div>{currentPage}</div>
+          <div className="current-page">{currentPage}</div>
         </div>
         <ListElements fetch={fetch} repos={repositories} filters={filters} />
       </div>

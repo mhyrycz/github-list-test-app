@@ -22,15 +22,16 @@ const PaginationButtons = props => {
   return (
     <div className="button-wrapper">
       <button
-        className="button"
+        left
+        className="button left"
         disabled={isButtonDisabled("previous")}
         onClick={props.decreasePage}
       >
-        Previous page
+        Prev page
       </button>
-
       <button
-        className="button"
+        right
+        className="button right"
         disabled={isButtonDisabled("next")}
         onClick={props.increasePage}
       >

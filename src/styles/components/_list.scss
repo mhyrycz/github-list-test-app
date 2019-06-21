@@ -1,3 +1,20 @@
 .list-wrapper {
+  display: grid;
+}
+
+.selection-buttons {
   display: flex;
+  padding: $m-size;
+}
+
+.info {
+  margin: auto;
+  font-size: 4.8rem;
+  text-align: center;
+}
+
+.current-page {
+  width: 40%;
+  text-align: right;
+  padding: $s-size 0 0 0;
 }

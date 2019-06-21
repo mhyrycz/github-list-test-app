@@ -25,7 +25,7 @@ const Table = props => {
   return (
     <div>
       {repos.length > 0 && !loading ? (
-        <table id="customers">
+        <table id="repositories">
           <thead>
             <tr>
               {tabHeaders.map((header, index) => {
@@ -49,7 +49,7 @@ const Table = props => {
           </tbody>
         </table>
       ) : (
-        <div>Not found</div>
+        <div className="info">Not found</div>
       )}
     </div>
   );

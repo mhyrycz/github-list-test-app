@@ -1,26 +1,27 @@
-#customers {
+#repositories {
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
   border-collapse: collapse;
   width: 100%;
   color: $off-white;
 }
 
-#customers td,
-#customers th {
+#repositories td,
+#repositories th {
   border: 1px solid $off-white;
   padding: 8px;
+  width: 20%;
 }
 
-#customers tr:nth-child(even) {
+#repositories tr:nth-child(even) {
   background-color: $light-blue;
 }
 
-#customers tr:hover {
+#repositories tr:hover {
   background-color: $purple;
-  color: $off-black;
+  color: white;
 }
 
-#customers th {
+#repositories th {
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: left;
