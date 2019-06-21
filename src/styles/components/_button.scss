@@ -1,0 +1,22 @@
+.button-wrapper {
+  margin: auto;
+  display: flex;
+}
+.button {
+  background: $purple;
+  border: none;
+  border-bottom: 0.3rem solid darken($purple, 10%);
+  color: white;
+  font-weight: 500;
+  font-size: $m-size;
+  padding: $s-size;
+}
+
+.button:disabled {
+  opacity: 0.5;
+}
+
+.current-page {
+  align-content: center;
+  padding: 0 10px 0 10px;
+}

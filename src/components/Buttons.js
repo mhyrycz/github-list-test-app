@@ -5,6 +5,8 @@ import { increasePage, decreasePage } from "../actions/filters";
 const PaginationButtons = props => {
   const { page, maxPage } = props.filters;
 
+  const currentPage = `${page + 1}/${maxPage + 1}`;
+
   const isButtonDisabled = button => {
     if (button === "previous") {
       if (page === 0) {
@@ -18,14 +20,20 @@ const PaginationButtons = props => {
   };
 
   return (
-    <div>
+    <div className="button-wrapper">
       <button
+        className="button"
         disabled={isButtonDisabled("previous")}
         onClick={props.decreasePage}
       >
         Previous page
       </button>
-      <button disabled={isButtonDisabled("next")} onClick={props.increasePage}>
+
+      <button
+        className="button"
+        disabled={isButtonDisabled("next")}
+        onClick={props.increasePage}
+      >
         Next page
       </button>
     </div>

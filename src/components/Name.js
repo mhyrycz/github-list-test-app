@@ -11,9 +11,14 @@ const Name = props => {
   };
 
   return (
-    <label>
+    <label className="input-wrapper">
       Name:
-      <input type="search" value={filters.name} onChange={handleChange} />
+      <input
+        className="input"
+        type="search"
+        value={filters.name}
+        onChange={handleChange}
+      />
     </label>
   );
 };

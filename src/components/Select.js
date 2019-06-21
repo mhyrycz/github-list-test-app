@@ -1,9 +1,10 @@
 import React from "react";
 
 const Select = props => (
-  <label>
-    Rows displayed:
+  <div className="select-wrapper">
+    <div>Rows displayed:</div>
     <select
+      className="select"
       value={props.filters.rows}
       onChange={e => {
         props.setRowsDisplayed(e.target.value);
@@ -19,7 +20,7 @@ const Select = props => (
       <option value="15">15</option>
       <option value="20">20</option>
     </select>
-  </label>
+  </div>
 );
 
 export default Select;

@@ -25,20 +25,18 @@ const Table = props => {
   return (
     <div>
       {repos.length > 0 && !loading ? (
-        <table>
+        <table id="customers">
           <thead>
             <tr>
               {tabHeaders.map((header, index) => {
                 return (
-                  <th key={index}>
-                    <a
-                      href="#"
-                      onClick={() => {
-                        handleSortBy(header.storageKey);
-                      }}
-                    >
-                      {header.title}
-                    </a>
+                  <th
+                    key={index}
+                    onClick={() => {
+                      handleSortBy(header.storageKey);
+                    }}
+                  >
+                    {header.title}
                   </th>
                 );
               })}

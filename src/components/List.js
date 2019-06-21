@@ -87,17 +87,22 @@ class List extends React.Component {
       resetPage
     } = this.props;
 
+    const currentPage = `Page: ${filters.page + 1}/${filters.maxPage + 1}`;
+
     return (
       <div>
         <Name filters={filters} getResponse={this.getResponse} />
-        <Select
-          filters={filters}
-          allRepositories={allRepositories}
-          setRowsDisplayed={setRowsDisplayed}
-          setMaxPage={setMaxPage}
-          resetPage={resetPage}
-        />
-        <Buttons filters={filters} />
+        <div className="list-wrapper">
+          <Select
+            filters={filters}
+            allRepositories={allRepositories}
+            setRowsDisplayed={setRowsDisplayed}
+            setMaxPage={setMaxPage}
+            resetPage={resetPage}
+          />
+          <Buttons filters={filters} />
+          <div>{currentPage}</div>
+        </div>
         <ListElements fetch={fetch} repos={repositories} filters={filters} />
       </div>
     );
