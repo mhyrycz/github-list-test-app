@@ -1,7 +1,8 @@
 import React from "react";
 
 const Select = props => (
-  <div>
+  <label>
+     Rows displayed:
     <select
       defaultValue={props.filters.rows}
       onChange={e => {
@@ -18,7 +19,7 @@ const Select = props => (
       <option value="15">15</option>
       <option value="20">20</option>
     </select>
-  </div>
+  </label>
 );
 
 export default Select;

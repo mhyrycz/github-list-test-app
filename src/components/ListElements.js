@@ -10,6 +10,7 @@ const renderLoading = () => <div>Loading...</div>;
 export default props => {
   const { error, loading } = props.fetch;
   const repos = props.repos;
+  const filters = props.filters;
 
   if (loading) {
     return renderLoading();
@@ -21,7 +22,7 @@ export default props => {
 
   return (
     <div>
-      <Table repos={repos} loading={loading} />
+      <Table repos={repos} loading={loading} filters={filters} />
     </div>
   );
 };

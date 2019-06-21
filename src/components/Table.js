@@ -1,8 +1,26 @@
 import React from "react";
 import Row from "./Row";
+import { connect } from "react-redux";
+import { setSortBy, setSortDirection } from "../actions/filters";
 
 const Table = props => {
-  const { repos, loading } = props;
+  const { repos, loading, filters } = props;
+
+  const handleSortBy = newSortBy => {
+    if (filters.sortBy === newSortBy) {
+      props.setSortDirection();
+    } else {
+      props.setSortBy(newSortBy);
+    }
+  };
+
+  const tabHeaders = [
+    { title: "ID", storageKey: "id" },
+    { title: "Repo title", storageKey: "name" },
+    { title: "Owner", storageKey: "owner" },
+    { title: "Stars", storageKey: "stargazers_count" },
+    { title: "Created at", storageKey: "created_at" }
+  ];
 
   return (
     <div>
@@ -10,11 +28,20 @@ const Table = props => {
         <table>
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Repo Title</th>
-              <th>Owner</th>
-              <th>Stars</th>
-              <th>Created at</th>
+              {tabHeaders.map((header, index) => {
+                return (
+                  <th key={index}>
+                    <a
+                      href="#"
+                      onClick={() => {
+                        handleSortBy(header.storageKey);
+                      }}
+                    >
+                      {header.title}
+                    </a>
+                  </th>
+                );
+              })}
             </tr>
           </thead>
           <tbody>
@@ -30,4 +57,14 @@ const Table = props => {
   );
 };
 
-export default Table;
+const mapDispatchToProps = (dispatch, props) => {
+  return {
+    setSortBy: sortBy => dispatch(setSortBy(sortBy)),
+    setSortDirection: () => dispatch(setSortDirection())
+  };
+};
+
+export default connect(
+  undefined,
+  mapDispatchToProps
+)(Table);

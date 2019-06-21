@@ -6,7 +6,7 @@ export default (state = repositoriesReducerDefaultState, action) => {
       const repositories = action.repositories.map(repo => ({
         id: repo.id,
         name: repo.name,
-        owner: repo.owner,
+        owner: repo.owner.login,
         stargazers_count: repo.stargazers_count,
         created_at: repo.created_at
       }));

@@ -25,3 +25,12 @@ export const setMaxPage = (reposLength, rows) => ({
   reposLength,
   rows
 });
+
+export const setSortDirection = () => ({
+  type: "SET_SORT_DIRECTION"
+});
+
+export const setSortBy = sortBy => ({
+  type: "SET_SORT_BY",
+  sortBy
+});

@@ -2,7 +2,9 @@ const filtersReducerDefaultState = {
   name: "react",
   rows: 5,
   page: 0,
-  maxPage: null
+  maxPage: null,
+  sortBy: "stargazers_count",
+  sortDirection: false
 };
 
 export default (state = filtersReducerDefaultState, action) => {
@@ -43,6 +45,16 @@ export default (state = filtersReducerDefaultState, action) => {
       return {
         ...state,
         maxPage: maxPage(action.reposLength, action.rows)
+      };
+    case "SET_SORT_DIRECTION":
+      return {
+        ...state,
+        sortDirection: !state.sortDirection
+      };
+    case "SET_SORT_BY":
+      return {
+        ...state,
+        sortBy: action.sortBy
       };
     default:
       return state;
