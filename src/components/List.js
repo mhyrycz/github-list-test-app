@@ -5,18 +5,21 @@ import USER_TOKEN from "../token";
 import debounce from "lodash/debounce";
 import { addRepositories, removeRepositories } from "../actions/repositories";
 import {
+  setFetch,
   setLoadingOn,
   setLoadingOff,
   setError,
   resetError
 } from "../actions/fetch";
 import {
+  setFilters,
   setName,
   setRowsDisplayed,
   setMaxPage,
   resetPage
 } from "../actions/filters";
 import selectRepositories from "../selectors/repositories";
+import { loadState } from "../store/configureLocalStorage";
 import Select from "./Select";
 import Buttons from "./Buttons";
 import ListElements from "./ListElements";
@@ -34,6 +37,7 @@ class List extends React.Component {
       sort: "stars"
     };
     const name = this.props.filters.name;
+
     if (name) {
       const AuthStr = "Bearer " + USER_TOKEN;
       this.props.setLoadingOn();
@@ -62,7 +66,14 @@ class List extends React.Component {
   }, 1000);
 
   componentDidMount() {
-    this.getResponse();
+    const localStorage = loadState();
+    if (localStorage) {
+      this.props.addRepositories(localStorage.repositories);
+      this.props.setFilters(localStorage.filters);
+      this.props.setFetch(localStorage.fetch);
+    } else {
+      this.getResponse();
+    }
   }
 
   render() {
@@ -106,7 +117,9 @@ const mapDispatchToProps = (dispatch, props) => {
   return {
     addRepositories: repos => dispatch(addRepositories(repos)),
     removeRepositories: repos => dispatch(removeRepositories(repos)),
+    setFilters: filters => dispatch(setFilters(filters)),
     setName: name => dispatch(setName(name)),
+    setFetch: fetch => dispatch(setFetch(fetch)),
     setLoadingOn: () => dispatch(setLoadingOn()),
     setLoadingOff: () => dispatch(setLoadingOff()),
     setError: error => dispatch(setError(error)),

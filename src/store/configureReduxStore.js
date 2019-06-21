@@ -2,6 +2,7 @@ import { createStore, combineReducers } from "redux";
 import repositoriesReducer from "../reducers/repositories";
 import filtersReducer from "../reducers/filters";
 import fetchReducer from "../reducers/fetch";
+import { saveState } from "./configureLocalStorage";
 
 export default () => {
   const store = createStore(
@@ -12,5 +13,10 @@ export default () => {
     }),
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
   );
+
+  store.subscribe(() => {
+    saveState(store.getState());
+  });
+
   return store;
 };

@@ -5,6 +5,12 @@ const fetchReducerDefaultState = {
 
 export default (state = fetchReducerDefaultState, action) => {
   switch (action.type) {
+    case "SET_FETCH":
+      return {
+        ...state,
+        loading: action.fetch.loading,
+        error: action.fetch.error
+      };
     case "LOADING_ON":
       return {
         ...state,

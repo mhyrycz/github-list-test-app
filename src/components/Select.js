@@ -2,9 +2,9 @@ import React from "react";
 
 const Select = props => (
   <label>
-     Rows displayed:
+    Rows displayed:
     <select
-      defaultValue={props.filters.rows}
+      value={props.filters.rows}
       onChange={e => {
         props.setRowsDisplayed(e.target.value);
         props.resetPage();

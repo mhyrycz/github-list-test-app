@@ -1,3 +1,8 @@
+export const setFilters = filters => ({
+  type: "SET_FILTERS",
+  filters
+});
+
 export const setRowsDisplayed = rows => ({
   type: "SET_ROWS_DISPLAYED",
   rows

@@ -9,6 +9,16 @@ const filtersReducerDefaultState = {
 
 export default (state = filtersReducerDefaultState, action) => {
   switch (action.type) {
+    case "SET_FILTERS":
+      return {
+        ...state,
+        name: action.filters.name,
+        rows: action.filters.rows,
+        page: action.filters.page,
+        maxPage: action.filters.maxPage,
+        sortBy: action.filters.sortBy,
+        sortDirection: action.filters.sortDirection
+      };
     case "SET_ROWS_DISPLAYED":
       return {
         ...state,
