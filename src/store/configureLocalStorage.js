@@ -18,3 +18,11 @@ export const loadState = () => {
     return undefined;
   }
 };
+
+export const removeState = () => {
+  try {
+    localStorage.removeItem("state");
+  } catch (err) {
+    return undefined;
+  }
+};

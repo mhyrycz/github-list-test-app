@@ -1,5 +1,5 @@
 const fetchReducerDefaultState = {
-  loading: true,
+  loading: false,
   error: null
 };
 
@@ -11,6 +11,8 @@ export default (state = fetchReducerDefaultState, action) => {
         loading: action.fetch.loading,
         error: action.fetch.error
       };
+    case "RESET_FETCH":
+      return fetchReducerDefaultState;
     case "LOADING_ON":
       return {
         ...state,

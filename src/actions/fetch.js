@@ -3,6 +3,10 @@ export const setFetch = fetch => ({
   fetch
 });
 
+export const resetFetch = () => ({
+  type: "RESET_FETCH"
+});
+
 export const setLoadingOn = () => ({
   type: "LOADING_ON"
 });

@@ -19,6 +19,8 @@ export default (state = filtersReducerDefaultState, action) => {
         sortBy: action.filters.sortBy,
         sortDirection: action.filters.sortDirection
       };
+    case "RESET_FILTERS":
+      return filtersReducerDefaultState;
     case "SET_ROWS_DISPLAYED":
       return {
         ...state,

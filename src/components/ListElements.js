@@ -1,11 +1,6 @@
 import React from "react";
 import Table from "./Table";
-
-const renderError = error => (
-  <div className="info">Error: {`${error.status} - ${error.message}`}</div>
-);
-
-const renderLoading = () => <div className="info">Loading...</div>;
+import { renderLoading, renderError } from "./Messages";
 
 export default props => {
   const { error, loading } = props.fetch;

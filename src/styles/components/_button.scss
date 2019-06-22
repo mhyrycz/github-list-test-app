@@ -22,6 +22,12 @@
   float: right;
 }
 
+.button.sign-in {
+  margin-left: auto;
+  margin-right: auto;
+  width: 20%;
+}
+
 .button:disabled {
   opacity: 0.5;
 }

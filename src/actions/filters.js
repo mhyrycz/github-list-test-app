@@ -3,6 +3,10 @@ export const setFilters = filters => ({
   filters
 });
 
+export const resetFilters = () => ({
+  type: "RESET_FILTERS"
+});
+
 export const setRowsDisplayed = rows => ({
   type: "SET_ROWS_DISPLAYED",
   rows
