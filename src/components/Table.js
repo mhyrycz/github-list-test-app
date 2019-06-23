@@ -14,6 +14,16 @@ const Table = props => {
     }
   };
 
+  const getColumnTitle = header => {
+    const title = header.title;
+    if (header.storageKey === filters.sortBy) {
+      const sortDirection = filters.sortDirection ? "ASC" : "DESC";
+      return `${title} (${sortDirection})`;
+    } else {
+      return `${title}`;
+    }
+  };
+
   const tabHeaders = [
     { title: "ID", storageKey: "id" },
     { title: "Repo title", storageKey: "name" },
@@ -36,7 +46,7 @@ const Table = props => {
                       handleSortBy(header.storageKey);
                     }}
                   >
-                    {header.title}
+                    {getColumnTitle(header)}
                   </th>
                 );
               })}
@@ -44,7 +54,7 @@ const Table = props => {
           </thead>
           <tbody>
             {repos.map((repo, index) => (
-              <Row repo={repo} index={index} key={repo.id} />
+              <Row repo={repo} key={index} />
             ))}
           </tbody>
         </table>
