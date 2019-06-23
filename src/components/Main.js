@@ -4,29 +4,24 @@ import List from "./List";
 import { connect } from "react-redux";
 import { loadState } from "../store/configureLocalStorage";
 
-class Main extends React.Component {
-  render() {
-    const shouldRenderList = () => {
-      const localStorage = loadState();
-      if (localStorage) {
-        return localStorage.user.login;
-      } else {
-        return false;
-      }
-    };
+const Main = props => {
+  const shouldRenderList = () => {
+    if (props.localStorage) {
+      return props.localStorage.user.login;
+    } else {
+      return false;
+    }
+  };
 
-    return (
-      <React.Fragment>
-        {shouldRenderList() ? <List /> : <Auth />}
-      </React.Fragment>
-    );
-  }
-}
+  return (
+    <React.Fragment>{shouldRenderList() ? <List /> : <Auth />}</React.Fragment>
+  );
+};
 
-const mapStateToProps = state => {
+const mapLocalStorageToProps = () => {
   return {
-    user: state.user
+    localStorage: loadState()
   };
 };
 
-export default connect(mapStateToProps)(Main);
+export default connect(mapLocalStorageToProps)(Main);

@@ -27,6 +27,8 @@ import Buttons from "./Buttons";
 import ListElements from "./ListElements";
 import Name from "./Name";
 import SignOut from "./SignOut";
+import SignedUser from "./SignedUser";
+import CurrentPage from "./CurrentPage";
 
 const MAX_PER_PAGE = 50;
 
@@ -70,7 +72,10 @@ class List extends React.Component {
 
   componentDidMount() {
     const localStorage = loadState();
-    if (localStorage.repositories.length > 0) {
+    if (
+      localStorage.repositories.length > 0 ||
+      localStorage.filters.name !== "react"
+    ) {
       this.props.addRepositories(localStorage.repositories);
       this.props.setFilters(localStorage.filters);
       this.props.setFetch(localStorage.fetch);
@@ -92,22 +97,24 @@ class List extends React.Component {
       resetUser,
       removeRepositories,
       resetFilters,
-      resetFetch
+      resetFetch,
+      user
     } = this.props;
-
-    const currentPage = `Page: ${filters.page + 1}/${filters.maxPage + 1}`;
 
     return (
       <div className="list-wrapper">
-        <Name filters={filters} getResponse={this.getResponse} />
-        <SignOut
-          resetUser={resetUser}
-          removeRepositories={removeRepositories}
-          resetFilters={resetFilters}
-          resetFetch={resetFetch}
-          removeState={removeState}
-        />
-        <div className="selection-buttons">
+        <div className="list-header">
+          <Name filters={filters} getResponse={this.getResponse} />
+          <SignedUser user={user} />
+          <SignOut
+            resetUser={resetUser}
+            removeRepositories={removeRepositories}
+            resetFilters={resetFilters}
+            resetFetch={resetFetch}
+            removeState={removeState}
+          />
+        </div>
+        <div className="table-utilities">
           <Select
             filters={filters}
             allRepositories={allRepositories}
@@ -116,7 +123,11 @@ class List extends React.Component {
             resetPage={resetPage}
           />
           <Buttons filters={filters} />
-          <div className="current-page">{currentPage}</div>
+          <CurrentPage
+            filters={filters}
+            loading={fetch.loading}
+            repositories={repositories}
+          />
         </div>
         <ListElements fetch={fetch} repos={repositories} filters={filters} />
       </div>

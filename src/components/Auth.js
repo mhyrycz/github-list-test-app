@@ -1,8 +1,8 @@
 import React from "react";
-import { setUser } from "../actions/user";
 import { connect } from "react-redux";
 import debounce from "lodash/debounce";
 import axios from "axios";
+import { setUser } from "../actions/user";
 import {
   setLoadingOn,
   setLoadingOff,
@@ -11,17 +11,34 @@ import {
 } from "../actions/fetch";
 import { renderLoading, renderError } from "./Messages";
 
-const Name = props => {
-  const { setUser, fetch } = props;
-  const handleChange = event => {
-    const token = event.target.value;
-    token && getResponse(token);
+class Name extends React.Component {
+  state = {
+    token: ""
   };
 
-  const getResponse = debounce(token => {
+  handleTokenChange = event => {
+    this.setState({ token: event.target.value });
+  };
+
+  handleSigning = () => {
+    this.getResponse(this.state.token);
+  };
+
+  isButtonDisabled = () => {
+    return !this.state.token;
+  };
+
+  getResponse = debounce(token => {
+    const {
+      setUser,
+      resetError,
+      setError,
+      setLoadingOn,
+      setLoadingOff
+    } = this.props;
     const AuthStr = "Bearer " + token;
-    props.setLoadingOn();
-    props.resetError();
+    setLoadingOn();
+    resetError();
     axios
       .get(window.encodeURI("https://api.github.com/user"), {
         headers: { Authorization: AuthStr }
@@ -30,26 +47,35 @@ const Name = props => {
         setUser(token, response.data.login);
       })
       .catch(error => {
-        props.setError(error.response);
-        props.setLoadingOff();
+        setError(error.response);
+        setLoadingOff();
       });
   }, 1000);
 
-  return (
-    <div className="auth">
-      <div className="auth-header">GitHub Repositories</div>
-      <input
-        placeholder="Provide GitHub authentication token..."
-        className="auth-input"
-        type="search"
-        onChange={handleChange}
-      />
-      <button class="button sign-in">Sign In</button>
-      {fetch.error && renderError(fetch.error)}
-      {fetch.loading && renderLoading()}
-    </div>
-  );
-};
+  render() {
+    const { fetch } = this.props;
+    return (
+      <div className="auth-wrapper">
+        <div className="auth-header">GitHub Repositories</div>
+        <input
+          placeholder="Provide GitHub authentication token..."
+          className="auth-input"
+          type="search"
+          onChange={this.handleTokenChange}
+        />
+        <button
+          disabled={this.isButtonDisabled()}
+          className="button sign-in"
+          onClick={this.handleSigning}
+        >
+          Sign In
+        </button>
+        {fetch.error && renderError(fetch.error)}
+        {fetch.loading && renderLoading()}
+      </div>
+    );
+  }
+}
 
 const mapStateToProps = state => {
   return {

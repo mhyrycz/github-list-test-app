@@ -10,6 +10,7 @@ const SignOut = props => {
   } = props;
   return (
     <button
+      className="button sign-out"
       onClick={() => {
         resetUser();
         removeState();

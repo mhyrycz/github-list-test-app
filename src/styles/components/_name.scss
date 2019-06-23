@@ -1,0 +1,16 @@
+.name-wrapper {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  padding: $m-size;
+}
+
+.name-input {
+  width: 60%;
+  background: $dark-blue;
+  border: none;
+  color: $off-white;
+  border-bottom: 0.3rem solid darken($dark-blue, 10%);
+  flex-grow: 1;
+  padding: $s-size;
+}

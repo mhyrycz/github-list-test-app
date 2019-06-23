@@ -23,9 +23,16 @@
 }
 
 .button.sign-in {
+  margin: $m-size;
   margin-left: auto;
   margin-right: auto;
   width: 20%;
+}
+
+.button.sign-out {
+  margin: auto;
+  margin-right: $m-size;
+  width: 10%;
 }
 
 .button:disabled {
