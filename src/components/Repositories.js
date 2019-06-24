@@ -58,9 +58,24 @@ class Repositories extends React.Component {
         )
         .then(response => {
           const repos = response.data.items;
-          this.props.addRepositories(repos);
+          const filteredArray = repos
+            .map(a => a.name)
+            .filter(str => {
+              return (
+                str.toLowerCase().indexOf(name.toLowerCase()) >= 0
+              );
+            });
+          const filteredRepos = filteredArray.map(name => {
+            return repos.find(obj => {
+              return obj.name === name;
+            });
+          })
+          this.props.addRepositories(filteredRepos);
           this.props.setLoadingOff();
-          this.props.setMaxPage(repos.length, this.props.filters.rows);
+          this.props.setMaxPage(
+            filteredRepos.length,
+            this.props.filters.rows
+          );
         })
         .catch(error => {
           this.props.setError(error.response);

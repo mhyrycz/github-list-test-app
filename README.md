@@ -48,3 +48,9 @@ Optional:
 2. Write good README in terms of instructions for reviewers
 
 		Done
+
+
+#Thoughts
+
+1. GitHub API repositories endpoint allows to find repositories by keywords. So, the preview contains all repositories including keyword in the name and these where keyword is not included in the name but connected with it. I decided to render all repositories containing input in the name of repository. 
+
