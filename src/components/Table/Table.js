@@ -1,7 +1,7 @@
 import React from "react";
 import Row from "./Row";
 import { connect } from "react-redux";
-import { setSortBy, setSortDirection } from "../actions/filters";
+import { setSortBy, setSortDirection } from "../../actions/filters";
 
 const Table = props => {
   const { repos, loading, filters } = props;
@@ -59,7 +59,7 @@ const Table = props => {
           </tbody>
         </table>
       ) : (
-        <div className="info">Not found</div>
+       filters.name && <div className="info">Not found</div>
       )}
     </div>
   );

@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { increasePage, decreasePage } from "../actions/filters";
+import { increasePage, decreasePage } from "../../actions/filters";
 
 const PaginationButtons = props => {
   const { page, maxPage } = props.filters;

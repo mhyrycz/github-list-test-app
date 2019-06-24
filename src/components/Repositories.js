@@ -13,7 +13,6 @@ import {
 } from "../actions/fetch";
 import {
   setFilters,
-  setName,
   setRowsDisplayed,
   setMaxPage,
   resetPage,
@@ -22,17 +21,17 @@ import {
 import { setUser, resetUser } from "../actions/user";
 import selectRepositories from "../selectors/repositories";
 import { loadState, removeState } from "../store/configureLocalStorage";
-import Select from "./Select";
-import Buttons from "./Buttons";
-import ListElements from "./ListElements";
-import Name from "./Name";
-import SignOut from "./SignOut";
-import SignedUser from "./SignedUser";
-import CurrentPage from "./CurrentPage";
+import Select from "./TableUtilities/Select";
+import Buttons from "./TableUtilities/Buttons";
+import CurrentPage from "./TableUtilities/CurrentPage";
+import TableElements from "./Table/TableElements";
+import Name from "./Header/Name";
+import SignOut from "./Header/SignOut";
+import SignedUser from "./Header/SignedUser";
 
 const MAX_PER_PAGE = 50;
 
-class List extends React.Component {
+class Repositories extends React.Component {
   getResponse = debounce(() => {
     const params = {
       page: 1,
@@ -72,14 +71,17 @@ class List extends React.Component {
 
   componentDidMount() {
     const localStorage = loadState();
-    if (
-      localStorage.repositories.length > 0 ||
-      localStorage.filters.name !== "react"
-    ) {
-      this.props.addRepositories(localStorage.repositories);
+    if (localStorage) {
+      const localStorageName = localStorage.filters.name;
+      const repositoriesLength = localStorage.repositories.length;
+      this.props.setUser(localStorage.user.token, localStorage.user.login);
       this.props.setFilters(localStorage.filters);
       this.props.setFetch(localStorage.fetch);
-      this.props.setUser(localStorage.user.token, localStorage.user.login);
+      if (repositoriesLength === 0 && localStorageName) {
+        this.getResponse();
+      } else if (repositoriesLength > 0 || localStorageName !== "react") {
+        this.props.addRepositories(localStorage.repositories);
+      }
     } else {
       this.getResponse();
     }
@@ -129,7 +131,7 @@ class List extends React.Component {
             repositories={repositories}
           />
         </div>
-        <ListElements fetch={fetch} repos={repositories} filters={filters} />
+        <TableElements fetch={fetch} repos={repositories} filters={filters} />
       </div>
     );
   }
@@ -151,7 +153,6 @@ const mapDispatchToProps = (dispatch, props) => {
     removeRepositories: repos => dispatch(removeRepositories(repos)),
     setFilters: filters => dispatch(setFilters(filters)),
     resetFilters: () => dispatch(resetFilters()),
-    setName: name => dispatch(setName(name)),
     setFetch: fetch => dispatch(setFetch(fetch)),
     resetFetch: () => dispatch(resetFetch()),
     setLoadingOn: () => dispatch(setLoadingOn()),
@@ -169,4 +170,4 @@ const mapDispatchToProps = (dispatch, props) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(List);
+)(Repositories);

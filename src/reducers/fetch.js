@@ -34,7 +34,7 @@ export default (state = fetchReducerDefaultState, action) => {
     case "RESET_ERROR":
       return {
         ...state,
-        error: null
+        error: fetchReducerDefaultState.error
       };
     default:
       return state;

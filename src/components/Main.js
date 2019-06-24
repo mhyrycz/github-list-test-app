@@ -1,11 +1,11 @@
 import React from "react";
 import Auth from "./Auth";
-import List from "./List";
+import Repositories from "./Repositories";
 import { connect } from "react-redux";
 import { loadState } from "../store/configureLocalStorage";
 
 const Main = props => {
-  const shouldRenderList = () => {
+  const shouldRenderRepositories = () => {
     if (props.localStorage) {
       return props.localStorage.user.login;
     } else {
@@ -14,7 +14,9 @@ const Main = props => {
   };
 
   return (
-    <React.Fragment>{shouldRenderList() ? <List /> : <Auth />}</React.Fragment>
+    <React.Fragment>
+      {shouldRenderRepositories() ? <Repositories /> : <Auth />}
+    </React.Fragment>
   );
 };
 

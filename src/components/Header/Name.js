@@ -1,5 +1,5 @@
 import React from "react";
-import { setName } from "../actions/filters";
+import { setName } from "../../actions/filters";
 import { connect } from "react-redux";
 
 const Name = props => {

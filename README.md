@@ -17,7 +17,7 @@ Information about localhost port is avaiable when server is started.
 		Done
 2. Render an <input> element to search for repositories by name
 
-		Done
+		Done. Default repository name is 'react'.
 3. Cache the results of every search - do not make an API request if the results are already stored, instead show them from some storage like localStorage
 
 		Done. Information stored in Redux State. You may use https://github.com/zalmoxisus/redux-devtools-extension to track State.

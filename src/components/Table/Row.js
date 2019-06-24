@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 const Row = props => {
   const { repo, login } = props;
 
-  const getRepoName = repo => {
+  const getRepoName = () => {
     const name = repo.name;
     if (repo.owner === login) {
       return `${name} (Your repository)`;
@@ -16,7 +16,7 @@ const Row = props => {
   return (
     <tr>
       <td>{repo.id}</td>
-      <td>{getRepoName(repo)}</td>
+      <td>{getRepoName()}</td>
       <td>{repo.owner}</td>
       <td>{repo.stargazers_count}</td>
       <td>{repo.created_at}</td>

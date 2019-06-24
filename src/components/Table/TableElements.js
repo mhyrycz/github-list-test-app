@@ -1,6 +1,6 @@
 import React from "react";
 import Table from "./Table";
-import { renderLoading, renderError } from "./Messages";
+import { renderLoading, renderError } from "../Messages";
 
 export default props => {
   const { error, loading } = props.fetch;
@@ -16,8 +16,8 @@ export default props => {
   }
 
   return (
-    <div>
+    <React.Fragment>
       <Table repos={repos} loading={loading} filters={filters} />
-    </div>
+    </React.Fragment>
   );
 };
