@@ -1,7 +1,6 @@
-export const setUser = (token, login) => ({
+export const setUser = user => ({
   type: "SET_USER",
-  token,
-  login
+  user
 });
 
 export const resetUser = () => ({

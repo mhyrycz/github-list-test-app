@@ -8,8 +8,8 @@ export default (state = userReducerDefaultState, action) => {
     case "SET_USER":
       return {
         ...state,
-        token: action.token,
-        login: action.login
+        token: action.user.token,
+        login: action.user.login
       };
     case "RESET_USER":
       return userReducerDefaultState;

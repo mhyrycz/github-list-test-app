@@ -44,7 +44,7 @@ class Name extends React.Component {
         headers: { Authorization: AuthStr }
       })
       .then(response => {
-        setUser(token, response.data.login);
+        setUser({ token, login: response.data.login });
       })
       .catch(error => {
         setError(error.response);
@@ -85,7 +85,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, props) => {
   return {
-    setUser: (token, login) => dispatch(setUser(token, login)),
+    setUser: user => dispatch(setUser(user)),
     setLoadingOn: () => dispatch(setLoadingOn()),
     setLoadingOff: () => dispatch(setLoadingOff()),
     setError: error => dispatch(setError(error)),

@@ -74,7 +74,7 @@ class Repositories extends React.Component {
     if (localStorage) {
       const localStorageName = localStorage.filters.name;
       const repositoriesLength = localStorage.repositories.length;
-      this.props.setUser(localStorage.user.token, localStorage.user.login);
+      this.props.setUser(localStorage.user);
       this.props.setFilters(localStorage.filters);
       this.props.setFetch(localStorage.fetch);
       if (repositoriesLength === 0 && localStorageName) {
