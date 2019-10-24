@@ -5,7 +5,7 @@ after cloning use ```yarn install``` to add node-modules.
 
 ## How to run
 ```
-$ cd ~/your_directory/callstack-test-app
+$ cd ~/your_directory/github-list-test-app
 $ yarn run dev-server
 ```
 Information about localhost port is avaiable when server is started.
@@ -42,7 +42,7 @@ Information about localhost port is avaiable when server is started.
     
 Optional:
 
-1. Use linting and/or formatting tool - ESLint, Prettier (if you use @callstack/eslint-config you should be good to go)
+1. Use linting and/or formatting tool - ESLint, Prettier
 
 		Done. Used formatting tool - Prettier.
 2. Write good README in terms of instructions for reviewers
