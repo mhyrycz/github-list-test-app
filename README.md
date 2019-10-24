@@ -1,4 +1,4 @@
-# callstack-test-app
+# github-list-test-app
 
 ## Installation
 after cloning use ```yarn install``` to add node-modules.
